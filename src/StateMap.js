@@ -166,7 +166,6 @@ class StateMap extends Component {
         showlakes: true,
         lakecolor: "Blue",
       },
-      title: "Sales by State",
     };
 
     // Add text annotations for state names
@@ -183,7 +182,7 @@ class StateMap extends Component {
 
     return (
       <div>
-        <h2>US Sales Map</h2>
+        <h2 className="ml-40 mt-10">US Sales Map</h2>
         <Plot data={data} layout={layout} />
       </div>
     );
