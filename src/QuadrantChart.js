@@ -7,9 +7,11 @@ const QuadrantChart = () => {
 
   useEffect(() => {
     const apiData = () => {
-      fetch("https://sheetdb.io/api/v1/vdq5t5fev3uiq?limit=500")
+      fetch(
+        "https://script.googleusercontent.com/macros/echo?user_content_key=7AQSgSdnncPnhV8qT3KrkodZvmi0H_e-G6VungOg68lsSA_Pw43x8XhgP1NNRbzKm0WSUjdtVqcj6Pst931KfnkGCrnPa-r9m5_BxDlH2jW0nuo2oDemN9CCS2h10ox_1xSncGQajx_ryfhECjZEnB8n10PVrbg8Vv4jrzmsm5JPaa8lSYayO-D-S_VBMfOpuYe7tUVdkrENOPmQUsOyQ4yilBNGBylvEpZOUXnulzsX_xDhbwqYIg&lib=MYh46KwtR1PGqq2iJu_X2srTH389liFSA"
+      )
         .then((res) => res.json())
-        .then((data) => setApiD(data));
+        .then((data) => setApiD(data.data));
     };
 
     apiData();

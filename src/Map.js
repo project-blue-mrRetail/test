@@ -5,6 +5,9 @@ import { statesData } from "./data";
 import "./App.css";
 import L from "leaflet";
 import img from "./assets/png.png";
+import img1 from "./assets/Group 9177.png";
+import img2 from "./assets/Group 9187.png";
+import img3 from "./assets/Group 9178.png";
 
 const center = [40.63463151377654, -97.89969605983609];
 
@@ -14,7 +17,7 @@ const markerIcon = new L.Icon({
 });
 
 export default function Map({ setOpenValue }) {
-  const [apiD, setApiD] = useState();
+  const [apiD, setApiD] = useState([]);
   const [mapData, setMapData] = useState();
   const [fillColor, setFillColor] = useState(
     statesData.features.map(() => "green")
@@ -33,10 +36,12 @@ export default function Map({ setOpenValue }) {
     setSelectedState(state);
     setVisibilityStates(visibilityStates.map((_, i) => i === index));
     const apiData = () => {
-      fetch("https://sheetdb.io/api/v1/vdq5t5fev3uiq?limit=500")
+      fetch(
+        "https://script.googleusercontent.com/macros/echo?user_content_key=7AQSgSdnncPnhV8qT3KrkodZvmi0H_e-G6VungOg68lsSA_Pw43x8XhgP1NNRbzKm0WSUjdtVqcj6Pst931KfnkGCrnPa-r9m5_BxDlH2jW0nuo2oDemN9CCS2h10ox_1xSncGQajx_ryfhECjZEnB8n10PVrbg8Vv4jrzmsm5JPaa8lSYayO-D-S_VBMfOpuYe7tUVdkrENOPmQUsOyQ4yilBNGBylvEpZOUXnulzsX_xDhbwqYIg&lib=MYh46KwtR1PGqq2iJu_X2srTH389liFSA "
+      )
         .then((res) => res.json())
         .then((data) => {
-          const filteredData = data.filter(
+          const filteredData = data.data.filter(
             (item) => item.store_state === state.properties.name
           );
           setApiD(filteredData);
@@ -47,9 +52,11 @@ export default function Map({ setOpenValue }) {
 
   useEffect(() => {
     const apiData = () => {
-      fetch("https://sheetdb.io/api/v1/vdq5t5fev3uiq?limit=500")
+      fetch(
+        "https://script.googleusercontent.com/macros/echo?user_content_key=7AQSgSdnncPnhV8qT3KrkodZvmi0H_e-G6VungOg68lsSA_Pw43x8XhgP1NNRbzKm0WSUjdtVqcj6Pst931KfnkGCrnPa-r9m5_BxDlH2jW0nuo2oDemN9CCS2h10ox_1xSncGQajx_ryfhECjZEnB8n10PVrbg8Vv4jrzmsm5JPaa8lSYayO-D-S_VBMfOpuYe7tUVdkrENOPmQUsOyQ4yilBNGBylvEpZOUXnulzsX_xDhbwqYIg&lib=MYh46KwtR1PGqq2iJu_X2srTH389liFSA "
+      )
         .then((res) => res.json())
-        .then((data) => setMapData(data));
+        .then((data) => setMapData(data.data));
     };
     apiData();
   }, []);
@@ -66,7 +73,7 @@ export default function Map({ setOpenValue }) {
         // Calculate the sum of sales for the state
         const sumSales = mapData.reduce((acc, item) => {
           if (item.store_state === stateName) {
-            return acc + parseFloat(item.Sales);
+            return acc + parseFloat(item.Actual_Sellout);
           }
           return acc;
         }, 0);
@@ -145,25 +152,33 @@ export default function Map({ setOpenValue }) {
 
       {apiD &&
         apiD.map((city, id) => {
-          const sales = city.Sales;
+          const sales = city.Actual_Sellout;
           const target = city.Target;
           // console.log(sales);
           let iconUrl;
 
+          // if (sales > target) {
+          //   iconUrl =
+          //     "https://th.bing.com/th/id/R.4ca6858ac91858abcdf6527002cf7923?rik=H02GCIGEnjQs6A&riu=http%3a%2f%2fwww.clker.com%2fcliparts%2fF%2fw%2fl%2fC%2fe%2fW%2fmap-marker.svg&ehk=ALSa4hKmAIpLTC08qRslruSeQKZ6grwKy6Ngk9a8ZIU%3d&risl=&pid=ImgRaw&r=0";
+          // } else if (sales === target) {
+          //   iconUrl =
+          //     "https://www.clker.com/cliparts/l/l/G/Y/u/m/map-pin-yellow.svg";
+          // } else {
+          //   iconUrl =
+          //     "https://th.bing.com/th/id/R.d2b2d7d42a95c1b35e91413b133add44?rik=ZYiEzAEXfjGKUA&riu=http%3a%2f%2fwww.downloadclipart.net%2flarge%2f35345-orange-pin-clipart.png&ehk=vTVt9Fw8bBKrkvfsSGGVXkuLWwYAvIik4YMAieBY5kM%3d&risl=&pid=ImgRaw&r=0";
+          // }
+
           if (sales > target) {
-            iconUrl =
-              "https://th.bing.com/th/id/R.4ca6858ac91858abcdf6527002cf7923?rik=H02GCIGEnjQs6A&riu=http%3a%2f%2fwww.clker.com%2fcliparts%2fF%2fw%2fl%2fC%2fe%2fW%2fmap-marker.svg&ehk=ALSa4hKmAIpLTC08qRslruSeQKZ6grwKy6Ngk9a8ZIU%3d&risl=&pid=ImgRaw&r=0";
+            iconUrl = img1;
           } else if (sales === target) {
-            iconUrl =
-              "https://www.clker.com/cliparts/l/l/G/Y/u/m/map-pin-yellow.svg";
+            iconUrl = img2;
           } else {
-            iconUrl =
-              "https://th.bing.com/th/id/R.d2b2d7d42a95c1b35e91413b133add44?rik=ZYiEzAEXfjGKUA&riu=http%3a%2f%2fwww.downloadclipart.net%2flarge%2f35345-orange-pin-clipart.png&ehk=vTVt9Fw8bBKrkvfsSGGVXkuLWwYAvIik4YMAieBY5kM%3d&risl=&pid=ImgRaw&r=0";
+            iconUrl = img3;
           }
 
           const customIcon = new L.Icon({
             iconUrl: iconUrl,
-            iconSize: [35, 45],
+            iconSize: [12, 18],
             iconAnchor: [17, 45],
             popupAnchor: [0, -45],
           });
@@ -181,7 +196,7 @@ export default function Map({ setOpenValue }) {
                   : 0
               }
             >
-              <Popup>{city.store_city}</Popup>
+              <Popup>{city.store_name}</Popup>
             </Marker>
           );
         })}

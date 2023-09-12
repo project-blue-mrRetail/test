@@ -26,16 +26,11 @@ const Navbar = ({ setSearchValue }) => {
             <span className="">
               <img src={logo} alt="google logo" className="h-[24px] w-[24px]" />
             </span>
-            <span className="text-md font-medium">Pixel Sales Dashboard</span>
-            <span className="text-[#21232653] font-medium px-3">&#62;</span>
-            <span
-              className="text-[#21232685] font-medium
-"
-            >
-              US
+            <span className="text-md font-medium">
+              <a href="/">Pixel Sales Dashboard</a>
             </span>
           </div>
-          <div className="relative text-left mt-5 flex flex-row space-x-4 bg-white px-5 pt-1 rounded-t-lg mr-[12px] w-[40%]">
+          <div className="relative text-left mt-6 flex flex-row space-x-4 bg-white px-5 pt-1 rounded-t-lg mr-[12px] w-[40%]">
             <div className="flex items-center justify-center">
               <h2 className="text-md">Results For:</h2>
             </div>

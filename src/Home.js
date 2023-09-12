@@ -18,24 +18,24 @@ import Filters from "./Filters";
 
 const Home = ({ searchValue }) => {
   const [apiData, setApiData] = useState([]); // Initialize the state variable with an empty array
-  const [borderColor, setBorderColor] = useState({
-    att: false,
-    ver: false,
-    tmob: false,
-    bestb: false,
-  });
+  // const [borderColor, setBorderColor] = useState({
+  //   att: false,
+  //   ver: false,
+  //   tmob: false,
+  //   bestb: false,
+  // });
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          "https://sheetdb.io/api/v1/vdq5t5fev3uiq?limit=500"
+          "https://script.googleusercontent.com/macros/echo?user_content_key=7AQSgSdnncPnhV8qT3KrkodZvmi0H_e-G6VungOg68lsSA_Pw43x8XhgP1NNRbzKm0WSUjdtVqcj6Pst931KfnkGCrnPa-r9m5_BxDlH2jW0nuo2oDemN9CCS2h10ox_1xSncGQajx_ryfhECjZEnB8n10PVrbg8Vv4jrzmsm5JPaa8lSYayO-D-S_VBMfOpuYe7tUVdkrENOPmQUsOyQ4yilBNGBylvEpZOUXnulzsX_xDhbwqYIg&lib=MYh46KwtR1PGqq2iJu_X2srTH389liFSA "
         );
         if (!response.ok) {
           throw new Error("Network response was not ok");
         }
         const data = await response.json();
-        setApiData(data); // Update the state variable with the fetched data
+        setApiData(data.data); // Update the state variable with the fetched data
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -51,23 +51,16 @@ const Home = ({ searchValue }) => {
 
   const [imageValue, setImageValue] = useState(null);
 
-  const handleImageClick = (event) => {
-    const clickedImageValue = event.target.getAttribute("data-value");
+  const handleImageClick = (e) => {
+    const clickedImageValue = e.target.getAttribute("data-value");
 
     setImageValue(clickedImageValue);
   };
 
-  const handleClick = (imageName) => {
-    setBorderColor((prevState) => ({
-      ...prevState,
-      [imageName]: !prevState[imageName],
-    }));
-  };
-
   const [deviceValue, setDeviceValue] = useState(null);
 
-  const handleDeviceClick = (event) => {
-    const clickedDeviceValue = event.target.getAttribute("data-value");
+  const handleDeviceClick = (e) => {
+    const clickedDeviceValue = e.target.getAttribute("data-value");
 
     setDeviceValue(clickedDeviceValue);
   };
@@ -90,8 +83,8 @@ const Home = ({ searchValue }) => {
       console.log(filteredData);
 
       const newprod = filteredData
-        .filter((item) => item.Total_Sales !== undefined) // Filter objects with Total_Sales defined
-        .map((item) => parseInt(item.Total_Sales, 10)) // Convert Total_Sales to integers
+        .filter((item) => item.Actual_Sellout !== undefined) // Filter objects with Total_Sales defined
+        .map((item) => parseInt(item.Actual_Sellout, 10)) // Convert Total_Sales to integers
         .reduce((acc, curr) => acc + curr, 0); // Sum the integer Total_Sales values
 
       console.log(newprod); // This will give you the sum of all integer Total_Sales values
@@ -106,8 +99,8 @@ const Home = ({ searchValue }) => {
       setProd6(nprod); // Update the state variable with the sum
 
       const pprod = filteredData
-        .filter((item) => item.Achievement !== undefined) // Filter objects with Achievement defined
-        .map((item) => parseInt(item.Achievement, 10)) // Convert Achievement to integers
+        .filter((item) => item.Cycle_Achievement !== undefined) // Filter objects with Achievement defined
+        .map((item) => parseInt(item.Cycle_Achievement, 10)) // Convert Achievement to integers
         .reduce((acc, curr) => acc + curr, 0); // Sum the integer Achievement values
 
       console.log(pprod); // This will give you the sum of all integer Achievement values
@@ -118,37 +111,90 @@ const Home = ({ searchValue }) => {
   const [openValue, setOpenValue] = useState();
   const [isFilterOpen, setIsFilterOpen] = useState(false);
 
+  const [is01Clicked, setIs01Clicked] = useState(false);
+
+  const handleImage01Click = (e) => {
+    setIs01Clicked(!is01Clicked);
+  };
+
+  const [is02Clicked, setIs02Clicked] = useState(false);
+
+  const handleImage02Click = (e) => {
+    setIs02Clicked(!is02Clicked);
+  };
+
+  const [is03Clicked, setIs03Clicked] = useState(false);
+
+  const handleImage03Click = (e) => {
+    setIs03Clicked(!is03Clicked);
+  };
+  const [is04Clicked, setIs04Clicked] = useState(false);
+
+  const handleImage04Click = (e) => {
+    setIs04Clicked(!is04Clicked);
+  };
+  const [is05Clicked, setIs05Clicked] = useState(false);
+
+  const handleImage05Click = (e) => {
+    setIs05Clicked(!is05Clicked);
+  };
+  const [is06Clicked, setIs06Clicked] = useState(false);
+
+  const handleImage06Click = (e) => {
+    setIs06Clicked(!is06Clicked);
+  };
+
+  const [activeImage, setActiveImage] = useState(null);
+
+  const handleImgClick = (imageNumber) => {
+    setActiveImage(imageNumber);
+  };
+
+  const [activeI, setActiveI] = useState(null);
+
+  const handleIClick = (imageNumber) => {
+    setActiveI(imageNumber);
+  };
   return (
     <>
       <div className="flex flex-row bg-white rounded-b-lg rounded-tl-lg">
         {/* Content */}
         {openValue ? (
-          <QuadrantChart />
+          <div className="flex items-center justify-center w-[50vw]">
+            <button
+              className={`flex py-4 px-6 rounded-md shadow-md items-center gap-1 hover:bg-[--primary-text-color] hover:text-white hover:shadow-lg ${
+                isFilterOpen ? "bg-[--primary-text-color] text-white" : ""
+              }`}
+              onClick={() => setIsFilterOpen(!isFilterOpen)}
+            >
+              {/* <BiFilter className="text-lg" /> */}
+              <span className="text-md block">Choose</span>
+              <span className="text-md block">Quadrant</span>
+            </button>
+          </div>
         ) : (
           <div className="ml-[2.5vw] mt-3">
             <div className="mt-2">
               <h1 className="font-medium text-start text-lg">Choose Carrier</h1>
               <div className="flex flex-row space-x-4 mt-3 ">
                 <img
-                  className={
-                    borderColor
-                      ? "w-[200px] h-[100px] border-2 border-blue-500"
-                      : "w-[200px] h-[100px]"
-                  }
+                  className="w-[200px] h-[100px]"
                   src={ver}
                   alt="verzion-png"
-                  onClick={() => handleClick("ver") && handleImageClick}
+                  onClick={handleImageClick}
                 />
                 <img
-                  className={
-                    borderColor
-                      ? "w-[200px] h-[100px] border-2 border-blue-500"
-                      : "w-[200px] h-[100px]"
-                  }
+                  className={`w-[200px] h-[100px] ${
+                    activeI === 1 ? "border-blue-500 border-2" : ""
+                  }`}
                   src={att}
                   alt="at&t-png"
                   data-value="ATT"
-                  onClick={handleImageClick}
+                  // onClick={handleImageClick}
+                  onClick={(e) => {
+                    handleImageClick(e);
+                    handleIClick(1);
+                  }}
                 />
               </div>
               <div className="flex flex-row space-x-4 py-2">
@@ -159,52 +205,75 @@ const Home = ({ searchValue }) => {
                   onClick={handleImageClick}
                 />
                 <img
-                  className="w-[200px] h-[100px]"
+                  className={`w-[200px] h-[100px] ${
+                    activeI === 2 ? "border-blue-500 border-2" : ""
+                  }`}
                   src={bestb}
                   alt="best-buy-png"
                   data-value="Bestbuy"
-                  onClick={handleImageClick}
+                  onClick={(e) => {
+                    handleImageClick(e);
+                    handleIClick(2);
+                  }}
                 />
               </div>
             </div>
             <div className="mt-4">
-              <h1
-                className="h-[25px] font-medium text-start text-lg
-              "
-              >
+              <h1 className="h-[25px] font-medium text-start text-lg">
                 Choose Device
               </h1>
               <div className="flex flex-row space-x-4 mt-3">
                 <img
-                  className="w-[200px] h-[80px]"
+                  className={`w-[200px] h-[80px] ${
+                    activeImage === 3 ? "border-blue-500 border-2" : ""
+                  }`}
                   src={pro7}
                   datavalue=""
                   alt="Pixel 7 pro"
                   data-value="Pixel 7 Pro"
-                  onClick={handleDeviceClick}
+                  onClick={(e) => {
+                    handleDeviceClick(e);
+                    handleImgClick(3);
+                  }}
                 />
                 <img
-                  className="w-[200px] h-[80px]"
+                  className={`w-[200px] h-[80px] ${
+                    activeImage === 4 ? "border-blue-500 border-2" : ""
+                  }`}
                   src={g7}
                   alt="Pixel 7"
                   data-value="Pixel Fold"
-                  onClick={handleDeviceClick}
+                  // onClick={handleDeviceClick}
+                  onClick={(e) => {
+                    handleDeviceClick(e);
+                    handleImgClick(4);
+                  }}
                 />
               </div>
               <div className="flex flex-row space-x-4 py-2">
                 <img
-                  className="w-[200px] h-[80px]"
+                  className={`w-[200px] h-[80px] ${
+                    activeImage === 5 ? "border-blue-500 border-2" : ""
+                  }`}
                   src={a7}
                   alt="Pixel 7a"
                   data-value="Pixel 7a"
-                  onClick={handleDeviceClick}
+                  onClick={(e) => {
+                    handleDeviceClick(e);
+                    handleImgClick(5);
+                  }}
                 />
                 <img
-                  className="w-[200px] h-[80px]"
+                  className={`w-[200px] h-[80px] ${
+                    activeImage === 6 ? "border-blue-500 border-2" : ""
+                  }`}
                   src={g6}
                   alt="Pixel 6"
                   data-value="Pixel 6a"
-                  onClick={handleDeviceClick}
+                  onClick={(e) => {
+                    handleDeviceClick(e);
+                    handleImgClick(6);
+                  }}
                 />
               </div>
             </div>
@@ -218,31 +287,28 @@ const Home = ({ searchValue }) => {
                 isFilterOpen={isFilterOpen}
                 setIsFilterOpen={setIsFilterOpen}
               />
-              {/* <button
-                className={`flex py-1 px-2 rounded-md shadow-md items-center  gap-1 hover:bg-[--primary-text-color] hover:text-white hover:shadow-lg ${
-                  isFilterOpen ? "bg-[--primary-text-color] text-white" : ""
-                }`}
-                onClick={() => setIsFilterOpen(!isFilterOpen)}
-              >
-                <BiFilter className="text-lg" />
-                <span className="text-sm">Chart</span>
-              </button> */}
             </div>
             {/* <div className="flex flex-row items-center justify-center space-x-2">
               <FiFilter />
               <h1 className="font-medium">KPI Filters:</h1>
             </div> */}
-            <div className="flex flex-row items-center justify-center pl-11 space-x-2">
-              <div className="h-[50px] w-[120px] border shadow-md flex items-center text-sm justify-center rounded-lg">
-                {prod !== 4 ? `${prod} TOTAL SALES` : "Total Sales"}
+            {!openValue ? (
+              <div className="flex flex-row items-center justify-center pl-11 space-x-2">
+                <div className="h-[50px] w-[120px] border flex items-center text-sm justify-center rounded-lg">
+                  {prod !== 4 ? `TOTAL SALES: ${prod}` : "Total Sales"}
+                </div>
+                <div className="h-[50px] w-[120px] border flex items-center text-sm justify-center rounded-lg">
+                  {prod6 !== 4 ? `WOW: ${prod6}%` : "WOW"}
+                </div>
+                <div className="h-[50px] w-auto border flex items-center text-sm justify-center px-4 rounded-lg">
+                  {prod7 !== 4
+                    ? `Target Achievement: ${prod7}%`
+                    : "Target Achievement"}
+                </div>
               </div>
-              <div className="h-[50px] w-[120px] border shadow-md flex items-center text-sm justify-center rounded-lg">
-                {prod6 !== 4 ? `WOW ${prod6}%` : "WOW"}
-              </div>
-              <div className="h-[50px] w-auto border shadow-md flex items-center text-sm justify-center px-4 rounded-lg">
-                {prod7 !== 4 ? `${prod7}% inc` : "Target Achievement"}
-              </div>
-            </div>
+            ) : (
+              ""
+            )}
           </div>
           <div className="mt-4 z-1 ">
             <Map setOpenValue={setOpenValue} />
