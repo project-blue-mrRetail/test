@@ -33,7 +33,7 @@ export default function Map({ setOpenValue }) {
     setSelectedState(state);
     setVisibilityStates(visibilityStates.map((_, i) => i === index));
     const apiData = () => {
-      fetch("https://sheetdb.io/api/v1/i521rqr7n8ht1?limit=500")
+      fetch("https://sheetdb.io/api/v1/pn37qhpchb411?limit=500")
         .then((res) => res.json())
         .then((data) => {
           const filteredData = data.filter(
@@ -47,7 +47,7 @@ export default function Map({ setOpenValue }) {
 
   useEffect(() => {
     const apiData = () => {
-      fetch("https://sheetdb.io/api/v1/i521rqr7n8ht1?limit=500")
+      fetch("https://sheetdb.io/api/v1/pn37qhpchb411?limit=500")
         .then((res) => res.json())
         .then((data) => setMapData(data));
     };
