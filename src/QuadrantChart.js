@@ -7,7 +7,7 @@ const QuadrantChart = () => {
 
   useEffect(() => {
     const apiData = () => {
-      fetch("https://sheetdb.io/api/v1/i521rqr7n8ht1?limit=500")
+      fetch("https://sheetdb.io/api/v1/vdq5t5fev3uiq?limit=500")
         .then((res) => res.json())
         .then((data) => setApiD(data));
     };
@@ -54,10 +54,10 @@ const QuadrantChart = () => {
       const options = {
         plugins: {
           quadrants: {
-            topLeft: "red",
-            topRight: "blue",
-            bottomRight: "green",
-            bottomLeft: "yellow",
+            topLeft: "#BAF2E9",
+            topRight: "#B0F2B4",
+            bottomRight: "#F2BAC9",
+            bottomLeft: "#BAD7F2",
           },
         },
         tooltips: {

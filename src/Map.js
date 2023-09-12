@@ -33,7 +33,7 @@ export default function Map({ setOpenValue }) {
     setSelectedState(state);
     setVisibilityStates(visibilityStates.map((_, i) => i === index));
     const apiData = () => {
-      fetch("https://sheetdb.io/api/v1/i521rqr7n8ht1?limit=500")
+      fetch("https://sheetdb.io/api/v1/vdq5t5fev3uiq?limit=500")
         .then((res) => res.json())
         .then((data) => {
           const filteredData = data.filter(
@@ -47,7 +47,7 @@ export default function Map({ setOpenValue }) {
 
   useEffect(() => {
     const apiData = () => {
-      fetch("https://sheetdb.io/api/v1/i521rqr7n8ht1?limit=500")
+      fetch("https://sheetdb.io/api/v1/vdq5t5fev3uiq?limit=500")
         .then((res) => res.json())
         .then((data) => setMapData(data));
     };
@@ -95,11 +95,11 @@ export default function Map({ setOpenValue }) {
     <MapContainer
       ref={mapRef}
       center={center}
-      zoom={4}
-      style={{ width: "55vw", height: "70vh" }}
+      zoom={3.5}
+      style={{ width: "55vw", height: "75vh", backgroundColor: "#0000" }}
       zoomControl={false}
       attributionControl={false}
-      className="rounded-lg"
+      className="rounded-lg border-[1px] border-[#DEDEDE]"
     >
       {statesData.features.map((state, index) => {
         if (!visibilityStates[index]) return null;
@@ -188,3 +188,5 @@ export default function Map({ setOpenValue }) {
     </MapContainer>
   );
 }
+
+// some changes added
