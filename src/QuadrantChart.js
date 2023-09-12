@@ -7,7 +7,7 @@ const QuadrantChart = () => {
 
   useEffect(() => {
     const apiData = () => {
-      fetch("https://sheetdb.io/api/v1/pn37qhpchb411?limit=500")
+      fetch("https://sheetdb.io/api/v1/vdq5t5fev3uiq?limit=500")
         .then((res) => res.json())
         .then((data) => setApiD(data));
     };
