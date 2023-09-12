@@ -188,3 +188,5 @@ export default function Map({ setOpenValue }) {
     </MapContainer>
   );
 }
+
+// some changes added
