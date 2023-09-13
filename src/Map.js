@@ -37,7 +37,7 @@ export default function Map({ setOpenValue }) {
     setVisibilityStates(visibilityStates.map((_, i) => i === index));
     const apiData = () => {
       fetch(
-        "https://script.googleusercontent.com/macros/echo?user_content_key=X7_4nZxzSBBeBIxT8S17vSRKuVabIng5cYGbnCv2SbBPOCJXbbkoDI0GC2np2Thu0synEnUix_1e3BCUefygcPj3Zg_aHPYAm5_BxDlH2jW0nuo2oDemN9CCS2h10ox_1xSncGQajx_ryfhECjZEnA0MGqPd1-iidTFCwRrONenz88FpuLqTlaCLh6RzoFqf1P-ZXHNaoq_MuXD4x-MwkiRBOsVP33cDT0zTLt9cMLqDWWgWoOPbutz9Jw9Md8uu&lib=MYh46KwtR1PGqq2iJu_X2srTH389liFSA"
+        "https://script.googleusercontent.com/macros/echo?user_content_key=CtjfrXiKZxlAcodiNGwgxB9S-zz4W8AiDE1M-YjaPZWZWnGtE9e-mvPEEpYnSrEp0HM0G5ZTw2YicrNY8dLb9FrKQhbMsR-Om5_BxDlH2jW0nuo2oDemN9CCS2h10ox_1xSncGQajx_ryfhECjZEnN9qIpFGl2kbI44RgyusawYb3kKTtUxt_ZUr5eI5kimfTjTsj9_-p_pgTpkGDxd_Zg44_CbVxs9MjYo34pRzBa4g56DPeGTkdNz9Jw9Md8uu&lib=MYh46KwtR1PGqq2iJu_X2srTH389liFSA"
       )
         .then((res) => res.json())
         .then((data) => {
@@ -53,7 +53,7 @@ export default function Map({ setOpenValue }) {
   useEffect(() => {
     const apiData = () => {
       fetch(
-        "https://script.googleusercontent.com/macros/echo?user_content_key=X7_4nZxzSBBeBIxT8S17vSRKuVabIng5cYGbnCv2SbBPOCJXbbkoDI0GC2np2Thu0synEnUix_1e3BCUefygcPj3Zg_aHPYAm5_BxDlH2jW0nuo2oDemN9CCS2h10ox_1xSncGQajx_ryfhECjZEnA0MGqPd1-iidTFCwRrONenz88FpuLqTlaCLh6RzoFqf1P-ZXHNaoq_MuXD4x-MwkiRBOsVP33cDT0zTLt9cMLqDWWgWoOPbutz9Jw9Md8uu&lib=MYh46KwtR1PGqq2iJu_X2srTH389liFSA"
+        "https://script.googleusercontent.com/macros/echo?user_content_key=CtjfrXiKZxlAcodiNGwgxB9S-zz4W8AiDE1M-YjaPZWZWnGtE9e-mvPEEpYnSrEp0HM0G5ZTw2YicrNY8dLb9FrKQhbMsR-Om5_BxDlH2jW0nuo2oDemN9CCS2h10ox_1xSncGQajx_ryfhECjZEnN9qIpFGl2kbI44RgyusawYb3kKTtUxt_ZUr5eI5kimfTjTsj9_-p_pgTpkGDxd_Zg44_CbVxs9MjYo34pRzBa4g56DPeGTkdNz9Jw9Md8uu&lib=MYh46KwtR1PGqq2iJu_X2srTH389liFSA"
       )
         .then((res) => res.json())
         .then((data) => setMapData(data.data));    
