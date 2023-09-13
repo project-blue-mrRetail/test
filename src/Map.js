@@ -37,7 +37,7 @@ export default function Map({ setOpenValue }) {
     setVisibilityStates(visibilityStates.map((_, i) => i === index));
     const apiData = () => {
       fetch(
-        "https://script.googleusercontent.com/macros/echo?user_content_key=7AQSgSdnncPnhV8qT3KrkodZvmi0H_e-G6VungOg68lsSA_Pw43x8XhgP1NNRbzKm0WSUjdtVqcj6Pst931KfnkGCrnPa-r9m5_BxDlH2jW0nuo2oDemN9CCS2h10ox_1xSncGQajx_ryfhECjZEnB8n10PVrbg8Vv4jrzmsm5JPaa8lSYayO-D-S_VBMfOpuYe7tUVdkrENOPmQUsOyQ4yilBNGBylvEpZOUXnulzsX_xDhbwqYIg&lib=MYh46KwtR1PGqq2iJu_X2srTH389liFSA "
+        "https://script.googleusercontent.com/macros/echo?user_content_key=X7_4nZxzSBBeBIxT8S17vSRKuVabIng5cYGbnCv2SbBPOCJXbbkoDI0GC2np2Thu0synEnUix_1e3BCUefygcPj3Zg_aHPYAm5_BxDlH2jW0nuo2oDemN9CCS2h10ox_1xSncGQajx_ryfhECjZEnA0MGqPd1-iidTFCwRrONenz88FpuLqTlaCLh6RzoFqf1P-ZXHNaoq_MuXD4x-MwkiRBOsVP33cDT0zTLt9cMLqDWWgWoOPbutz9Jw9Md8uu&lib=MYh46KwtR1PGqq2iJu_X2srTH389liFSA"
       )
         .then((res) => res.json())
         .then((data) => {
@@ -53,32 +53,34 @@ export default function Map({ setOpenValue }) {
   useEffect(() => {
     const apiData = () => {
       fetch(
-        "https://script.googleusercontent.com/macros/echo?user_content_key=7AQSgSdnncPnhV8qT3KrkodZvmi0H_e-G6VungOg68lsSA_Pw43x8XhgP1NNRbzKm0WSUjdtVqcj6Pst931KfnkGCrnPa-r9m5_BxDlH2jW0nuo2oDemN9CCS2h10ox_1xSncGQajx_ryfhECjZEnB8n10PVrbg8Vv4jrzmsm5JPaa8lSYayO-D-S_VBMfOpuYe7tUVdkrENOPmQUsOyQ4yilBNGBylvEpZOUXnulzsX_xDhbwqYIg&lib=MYh46KwtR1PGqq2iJu_X2srTH389liFSA "
+        "https://script.googleusercontent.com/macros/echo?user_content_key=X7_4nZxzSBBeBIxT8S17vSRKuVabIng5cYGbnCv2SbBPOCJXbbkoDI0GC2np2Thu0synEnUix_1e3BCUefygcPj3Zg_aHPYAm5_BxDlH2jW0nuo2oDemN9CCS2h10ox_1xSncGQajx_ryfhECjZEnA0MGqPd1-iidTFCwRrONenz88FpuLqTlaCLh6RzoFqf1P-ZXHNaoq_MuXD4x-MwkiRBOsVP33cDT0zTLt9cMLqDWWgWoOPbutz9Jw9Md8uu&lib=MYh46KwtR1PGqq2iJu_X2srTH389liFSA"
       )
         .then((res) => res.json())
-        .then((data) => setMapData(data.data));
+        .then((data) => setMapData(data.data));    
     };
     apiData();
-  }, []);
-
-  useEffect(() => {
-    console.log(mapData);
   }, [mapData]);
+
+  // useEffect(()=>{
+  //   console.log(mapData[1].Actual_Sellout);
+  // }, [mapData])
+  
 
   useEffect(() => {
     if (mapData) {
       const updatedFillColor = fillColor.map((color, index) => {
         const stateName = statesData.features[index].properties.name;
-
+     
         // Calculate the sum of sales for the state
         const sumSales = mapData.reduce((acc, item) => {
           if (item.store_state === stateName) {
             return acc + parseFloat(item.Actual_Sellout);
+            
           }
           return acc;
         }, 0);
 
-        console.log(sumSales);
+        // console.log(sumSales);
 
         // Calculate the sum of targets for the state
         const sumTargets = mapData.reduce((acc, item) => {
@@ -88,7 +90,7 @@ export default function Map({ setOpenValue }) {
           return acc;
         }, 0);
 
-        console.log(sumTargets);
+        // console.log(sumTargets);
 
         // Set color based on the condition (target > sum)
         return sumTargets > sumSales ? "red" : "green";

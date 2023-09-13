@@ -29,7 +29,7 @@ const Home = ({ searchValue }) => {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          "https://script.googleusercontent.com/macros/echo?user_content_key=7AQSgSdnncPnhV8qT3KrkodZvmi0H_e-G6VungOg68lsSA_Pw43x8XhgP1NNRbzKm0WSUjdtVqcj6Pst931KfnkGCrnPa-r9m5_BxDlH2jW0nuo2oDemN9CCS2h10ox_1xSncGQajx_ryfhECjZEnB8n10PVrbg8Vv4jrzmsm5JPaa8lSYayO-D-S_VBMfOpuYe7tUVdkrENOPmQUsOyQ4yilBNGBylvEpZOUXnulzsX_xDhbwqYIg&lib=MYh46KwtR1PGqq2iJu_X2srTH389liFSA "
+          "https://script.googleusercontent.com/a/macros/gretail.com/echo?user_content_key=xmvSokh3tFvJw5VnyjnLZp2jHYXVpRFWmLW8P3qA22nxJ-JYWZWRizFqB1Psu-pLLT5cPt4ABBHP8xd6ZVHDPAkmUFwXmW17OJmA1Yb3SEsKFZqtv3DaNYcMrmhZHmUMi80zadyHLKD1bawQL3SRwvta4TobXTk4h8JJZFsljkhvwkJxhVOROxL9pgPh2nUnlrnVYnf3Z1GF8pBgCF8oZYMOIcOoz4epp-E1npCN_KkPM2ExEbUzdifscNTAf1rUiZqwz6PKY8M&lib=MYh46KwtR1PGqq2iJu_X2srTH389liFSA "
         );
         if (!response.ok) {
           throw new Error("Network response was not ok");
@@ -43,7 +43,7 @@ const Home = ({ searchValue }) => {
     fetchData();
   }, []);
 
-  console.log(apiData);
+  // console.log(apiData);
 
   const [prod, setProd] = useState(4);
   const [prod6, setProd6] = useState(4);
@@ -65,9 +65,9 @@ const Home = ({ searchValue }) => {
     setDeviceValue(clickedDeviceValue);
   };
 
-  console.log(searchValue);
-  console.log(deviceValue);
-  console.log(imageValue);
+  // console.log(searchValue);
+  // console.log(deviceValue);
+  // console.log(imageValue);
 
   // sales value
   useEffect(() => {
@@ -76,7 +76,7 @@ const Home = ({ searchValue }) => {
         apiData &&
         apiData.filter(
           (item) =>
-            item.Week_Year === searchValue &&
+            item.Week === searchValue &&
             item.Product === deviceValue &&
             item.Retailer === imageValue
         );

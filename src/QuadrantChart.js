@@ -1,119 +1,200 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
 import Chart from "chart.js/auto";
+import csvData from './data.csv';
 
 const QuadrantChart = () => {
   const quadrantChartRef = useRef(null);
-  const [apiD, setApiD] = useState();
+  const chartInstanceRef = useRef(null);
 
   useEffect(() => {
-    const apiData = () => {
-      fetch(
-        "https://script.googleusercontent.com/macros/echo?user_content_key=7AQSgSdnncPnhV8qT3KrkodZvmi0H_e-G6VungOg68lsSA_Pw43x8XhgP1NNRbzKm0WSUjdtVqcj6Pst931KfnkGCrnPa-r9m5_BxDlH2jW0nuo2oDemN9CCS2h10ox_1xSncGQajx_ryfhECjZEnB8n10PVrbg8Vv4jrzmsm5JPaa8lSYayO-D-S_VBMfOpuYe7tUVdkrENOPmQUsOyQ4yilBNGBylvEpZOUXnulzsX_xDhbwqYIg&lib=MYh46KwtR1PGqq2iJu_X2srTH389liFSA"
-      )
-        .then((res) => res.json())
-        .then((data) => setApiD(data.data));
-    };
+    console.log("QuadrantChart component is mounted.");
+  
+    const ctx = quadrantChartRef.current.getContext("2d");
+    // Check if there's an existing Chart instance and destroy it
+    // if (chartInstanceRef.current) {
+    //   console.log("Chart destroyer")
+    //   chartInstanceRef.current.destroy();
+    // }
 
-    apiData();
-  }, []);
+    let isChartMounted = true;
 
-  useEffect(() => {
-    const quadrantChartCanvas = quadrantChartRef.current.getContext("2d");
-    const existingChart = Chart.getChart(quadrantChartCanvas);
+    fetch(csvData)
+      .then((res) => res.text())
+      .then((data) => {
+        const dataArr = data
+          .trim()
+          .split('\n')
+          .map((row) => row.replace('\r', '').split(','))
+          .slice(1);
+        
+        if(!isChartMounted) return
 
-    // Destroy the existing chart if it exists
-    if (existingChart) {
-      existingChart.destroy();
-    }
+        const store_name = dataArr.map((row) => row[7]);
+        const Cycle_Achievement = dataArr.map((row) => row[27]);
+        const four_Cycle_Achievement = dataArr.map((row) => row[24]);
 
-    if (apiD) {
-      const data = {
-        labels: apiD.map((item) => item.store_name),
-        datasets: [
-          {
-            label: "pixel_6",
-            data: apiD.map((item) => ({
-              x: parseFloat(item.Total_Sales),
-              y: parseFloat(item.Quadrant_Plot),
-              label: item.store_name,
-            })),
-            borderColor: "red",
-            backgroundColor: "green",
-          },
-          // {
-          //   label: "pixel_6A",
-          //   data: apiD.map((item) => ({
-          //     x: parseFloat(item.pixel_7_pro_cycle),
-          //     y: parseFloat(item.pixel_7_pro),
-          //     label: item.store_name,
-          //   })),
-          //   borderColor: "yellow",
-          //   backgroundColor: "orange",
-          // },
-        ],
-      };
+        const data_x_y = [];
 
-      const options = {
-        plugins: {
-          quadrants: {
-            topLeft: "#BAF2E9",
-            topRight: "#B0F2B4",
-            bottomRight: "#F2BAC9",
-            bottomLeft: "#BAD7F2",
-          },
-        },
-        tooltips: {
-          callbacks: {
-            label: (context) => {
-              const storeName =
-                data.datasets[context.datasetIndex].data[context.dataIndex]
-                  .label;
-              return `Store Name: ${storeName}`;
+        for (let i = 0; i < Cycle_Achievement.length; i++) {
+          data_x_y.push({
+            x: parseFloat(Cycle_Achievement[i].split('%')[0]),
+            y: parseFloat(four_Cycle_Achievement[i].split('%')[0]),
+          });
+        }
+
+        const options = {
+          scales: {
+            x: {
+              ticks: {
+                callback: function (value, index, values) {
+                  return value + '%';
+                },
+              },
+            },
+            y: {
+              ticks: {
+                callback: function (value, index, values) {
+                  return value + '%';
+                },
+              },
             },
           },
-        },
-      };
+          plugins: {
+            quadrants: {
+              topLeft: 'rgba(255, 255, 255, 0.5)',
+              topRight: 'rgba(255, 255, 255, 0.5)',
+              bottomRight: 'rgba(255, 255, 255, 0.5)',
+              bottomLeft: 'rgba(255, 255, 255, 0.5)',
+            },
+          },
+          references: {
+            xLine: {
+              value: 100,
+              borderColor: 'black',
+              borderWidth: 1,
+              label: {
+                content: 'X = 100',
+                enabled: true,
+              },
+            },
+            yLine: {
+              value: 100,
+              borderColor: 'black',
+              borderWidth: 1,
+              label: {
+                content: 'Y = 100',
+                enabled: true,
+              },
+            },
+          },
+        };
 
-      const quadrants = {
-        id: "quadrants",
-        beforeDraw(chart, args, options) {
-          const {
-            ctx,
-            chartArea: { left, top, right, bottom },
-            scales: { x, y },
-          } = chart;
-          const midX = x.getPixelForValue(0);
-          const midY = y.getPixelForValue(0);
-          ctx.save();
-          ctx.fillStyle = options.topLeft;
-          ctx.fillRect(left, top, midX - left, midY - top);
-          ctx.fillStyle = options.topRight;
-          ctx.fillRect(midX, top, right - midX, midY - top);
-          ctx.fillStyle = options.bottomRight;
-          ctx.fillRect(midX, midY, right - midX, bottom - midY);
-          ctx.fillStyle = options.bottomLeft;
-          ctx.fillRect(left, midY, midX - left, bottom - midY);
-          ctx.restore();
-        },
-      };
+        const quadrants = {
+          id: 'quadrants',
+          beforeDraw(chart, args, options) {
+            const {
+              ctx,
+              chartArea: { left, top, right, bottom },
+              scales: { x, y },
+            } = chart;
+            const midX = x.getPixelForValue(0);
+            const midY = y.getPixelForValue(0);
+            ctx.save();
+            ctx.fillStyle = options.topLeft;
+            ctx.fillRect(left, top, midX - left, midY - top);
+            ctx.fillStyle = options.topRight;
+            ctx.fillRect(midX, top, right - midX, midY - top);
+            ctx.fillStyle = options.bottomRight;
+            ctx.fillRect(midX, midY, right - midX, bottom - midY);
+            ctx.fillStyle = options.bottomLeft;
+            ctx.fillRect(left, midY, midX - left, bottom - midY);
+            ctx.restore();
 
-      const quadrantChart = new Chart(quadrantChartCanvas, {
-        type: "scatter",
-        data: data,
-        options: options,
-        plugins: [quadrants],
+            // Add references line here
+            const { references } = chart.options;
+            if (references) {
+              const { xLine, yLine } = references;
+              if (xLine) {
+                const { value, borderColor, borderWidth, label } = xLine;
+                const xPixel = x.getPixelForValue(value);
+                ctx.save();
+                ctx.beginPath();
+                ctx.moveTo(xPixel, top);
+                ctx.lineTo(xPixel, bottom);
+                ctx.strokeStyle = borderColor;
+                ctx.lineWidth = borderWidth;
+                ctx.stroke();
+                ctx.restore();
+                if (label && label.enabled) {
+                  const { content } = label;
+                  ctx.save();
+                  ctx.fillStyle = borderColor;
+                  ctx.font = '12px Arial';
+                  ctx.textAlign = 'center';
+                  ctx.textBaseline = 'bottom';
+                  ctx.fillText(content, xPixel, bottom);
+                  ctx.restore();
+                }
+              }
+              if (yLine) {
+                const { value, borderColor, borderWidth, label } = yLine;
+                const yPixel = y.getPixelForValue(value);
+                ctx.save();
+                ctx.beginPath();
+                ctx.moveTo(left, yPixel);
+                ctx.lineTo(right, yPixel);
+                ctx.strokeStyle = borderColor;
+                ctx.lineWidth = borderWidth;
+                ctx.stroke();
+                ctx.restore();
+                if (label && label.enabled) {
+                  const { content } = label;
+                  ctx.save();
+                  ctx.fillStyle = borderColor;
+                  ctx.font = '12px Arial';
+                  ctx.textAlign = 'right';
+                  ctx.textBaseline = 'bottom';
+                  ctx.fillText(content, right, yPixel);
+                  ctx.restore();
+                }
+              }
+            }
+          },
+        };
+
+        chartInstanceRef.current = new Chart(ctx, {
+          type: 'scatter',
+          data: {
+            labels: store_name,
+            datasets: [
+              {
+                label: 'Points',
+                data: data_x_y,
+                borderColor: 'blue',
+                backgroundColor: 'rgba(0, 125, 255, 0.5)',
+              },
+            ],
+          },
+          options: options,
+          plugins: [quadrants],
+        });
       });
-    }
-  }, [apiD]);
+      return () => {
+        isChartMounted = false; // Set the flag to false when unmounting
+        if (chartInstanceRef.current) {
+          chartInstanceRef.current.destroy();
+        }
+      };
+  }, []);
+  
 
   return (
-    <div className="container pt-10 flex justify-center items-center">
+    <div className=" h-[500px] pt-10 flex justify-center items-center">
       <canvas
-        id="quadrantChart"
+        // id="quadrantChart"/
+        id="chartComponent"
         ref={quadrantChartRef}
-        width="200"
-        height="200"
-      ></canvas>
+        ></canvas>
     </div>
   );
 };
